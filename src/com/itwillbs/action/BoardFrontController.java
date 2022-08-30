@@ -40,6 +40,7 @@ public class BoardFrontController extends HttpServlet{
 		//2. 가상주소 매핑-------------------------------------------------------------------------
 		ActionForward forward = null; // 이동티켓 - 미리 변수만 들어두기 여러번 쓸거라서
 		
+		// 1번 디비를 사용하지 않을 경우 이 패턴으로 사용
 		if(command.equals("/BoardWrite.bo")){ // 1단계 마지막에 만들진 주소가 이것과 똑같나
 			// 글쓰기 페이지 보여주기 - 주소가 맞으면
 			// 여기서 판단해야함 디비를 쓸건지 말건지 => DB경로가 필요없음
@@ -52,6 +53,26 @@ public class BoardFrontController extends HttpServlet{
 			forward.setRedirect(false); // 이동방식을 false forward 방식
 			// 아직 이동한 것은 아니고 저장만 한 것 
 		}
+		
+		// 2번 디비를 사용할 경우 이러한 패턴으로 사용
+		else if(command.equals("/BoardWriteAction.bo")){ // 가상주소가 동일하고 디비작업이 필요할 때
+			System.out.println("C : /BoardWriteAction.bo 호출");
+			System.out.println("C : DB작업 o, 페이지 이동");
+			
+			//BoardWriteAction() 객체 생성
+			BoardWriteAction bwAction = new BoardWriteAction();
+			
+			try {
+				forward = bwAction.execute(request, response); // forward를 리턴한 것을 받는다
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			//2단계 끝이고 3단계로가서 forward의 정보고 이동한다
+			
+			
+		}
+		
+		
 		//2. 가상주소 매핑-------------------------------------------------------------------------
 		System.out.println("2. 가상주소 매핑 - 끝");
 		
@@ -78,7 +99,7 @@ public class BoardFrontController extends HttpServlet{
 			}
 		}
 		//3. 가상주소 이동-------------------------------------------------------------------------
-		System.out.println("\n 3. 가상주소 이동 - 끝");
+		System.out.println(" 3. 가상주소 이동 - 끝");
 		
 	}
 	/////////////////////////////////////doProcess///////////////////////////////////////////////////////////
