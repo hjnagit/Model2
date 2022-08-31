@@ -1,10 +1,10 @@
-package com.itwillbs.action;
+package com.itwillbs.board.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.itwillbs.db.BoardDAO;
-import com.itwillbs.db.BoardDTO;
+import com.itwillbs.board.db.BoardDAO;
+import com.itwillbs.board.db.BoardDTO;
 
 public class BoardWriteAction implements Action{
 	//Pro 페이지의 기능을 하게
@@ -29,6 +29,10 @@ public class BoardWriteAction implements Action{
 		dto.setPass(request.getParameter("pass"));
 		dto.setSubject(request.getParameter("subject"));
 		dto.setContent(request.getParameter("content"));
+		
+		//ip주소 추가
+		dto.setIp(request.getRemoteAddr()); // 유저정보를 확인할 수 있는 
+		
 		
 		System.out.println("M : " + dto);
 		

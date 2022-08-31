@@ -1,4 +1,4 @@
-package com.itwillbs.action;
+package com.itwillbs.board.action;
 
 public class ActionForward {
 	//페이지 이동을 위한 정보를 저장하는 객체

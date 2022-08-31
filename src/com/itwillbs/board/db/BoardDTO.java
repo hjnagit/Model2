@@ -1,4 +1,4 @@
-package com.itwillbs.db;
+package com.itwillbs.board.db;
 
 import java.sql.Date;
 

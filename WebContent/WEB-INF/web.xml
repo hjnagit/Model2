@@ -12,7 +12,7 @@
   
   <servlet>
   	<servlet-name>BoardFrontController</servlet-name>
-  	<servlet-class>com.itwillbs.action.BoardFrontController</servlet-class>
+  	<servlet-class>com.itwillbs.board.action.BoardFrontController</servlet-class>
   </servlet>
   
   <servlet-mapping>

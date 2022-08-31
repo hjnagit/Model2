@@ -1,4 +1,4 @@
-package com.itwillbs.action;
+package com.itwillbs.board.action;
 
 import java.io.IOException;
 
@@ -38,6 +38,7 @@ public class BoardFrontController extends HttpServlet{
 		
 		System.out.println("\n 2. 가상주소 매핑 - 시작");
 		//2. 가상주소 매핑-------------------------------------------------------------------------
+		Action action = null; // 업캐스팅으로 코드바꾸기
 		ActionForward forward = null; // 이동티켓 - 미리 변수만 들어두기 여러번 쓸거라서
 		
 		// 1번 디비를 사용하지 않을 경우 이 패턴으로 사용
@@ -60,14 +61,33 @@ public class BoardFrontController extends HttpServlet{
 			System.out.println("C : DB작업 o, 페이지 이동");
 			
 			//BoardWriteAction() 객체 생성
-			BoardWriteAction bwAction = new BoardWriteAction();
+			//BoardWriteAction bwAction = new BoardWriteAction();
+			action = new BoardWriteAction();
 			
 			try {
-				forward = bwAction.execute(request, response); // forward를 리턴한 것을 받는다
+//				forward = bwAction.execute(request, response); // forward를 리턴한 것을 받는다
+				forward = action.execute(request, response);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			//2단계 끝이고 3단계로가서 forward의 정보고 이동한다
+		}
+		
+		else if(command.equals("/BoardList.bo")){ // 게시판 리스트로 이동하기
+			System.out.println("C : /BoardList.bo 호출");
+			System.out.println("C : DB정보가 필요, 페이지 이동x, 페이지 출력o");
+			
+			//BoardListAction() 객체 생성
+//			BoardListAction listAction = new BoardListAction();
+			action = new BoardListAction();
+			try {
+				System.out.println("C : 해당 Model 객체 호출");
+//				forward = listAction.execute(request, response);
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			
 			
 		}

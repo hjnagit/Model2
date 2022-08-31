@@ -18,6 +18,9 @@
 	
 	//글쓰기 페이지로 이동
 	response.sendRedirect("./BoardWrite.bo");
+	
+	//글 리스트 페이지 이동
+//	response.sendRedirect("./boardList.bo");
 
 %>
 

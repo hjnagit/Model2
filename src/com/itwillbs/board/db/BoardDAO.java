@@ -1,10 +1,17 @@
-package com.itwillbs.db;
+package com.itwillbs.board.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.naming.Context;
+
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
 
 public class BoardDAO {
 	//DAO ( data access object)  : 데이터 처리 객체
@@ -20,22 +27,39 @@ public class BoardDAO {
 		System.out.println("DAO : DB연결에 관한 모든 정보를 준비 완료!");
 	}
 	
+//	//디비 연결
+//	private Connection getConnect() throws Exception{
+//		//디비 연결 정보
+//		String DRIVER = "com.mysql.cj.jdbc.Driver";
+//		String DBURL = "jdbc:mysql://localhost:3306/jspdb";
+//		String DBID = "root";
+//		String DBPW = "1234";
+//				
+//		//1. 드라이버 로드
+//		Class.forName(DRIVER);
+//		System.out.println("드라이버로드 성공");
+//				
+//		//2. 디비연결
+//		con = DriverManager.getConnection(DBURL, DBID, DBPW);
+//		System.out.println("디비 연결 성공");
+//		System.out.println("con : " + con);
+//				
+//		return con;		
+//	
+//	}// 디비연결
+	
 	//디비 연결
 	private Connection getConnect() throws Exception{
-		//디비 연결 정보
-		String DRIVER = "com.mysql.cj.jdbc.Driver";
-		String DBURL = "jdbc:mysql://localhost:3306/jspdb";
-		String DBID = "root";
-		String DBPW = "1234";
-				
-		//1. 드라이버 로드
-		Class.forName(DRIVER);
-		System.out.println("드라이버로드 성공");
-				
-		//2. 디비연결
-		con = DriverManager.getConnection(DBURL, DBID, DBPW);
-		System.out.println("디비 연결 성공");
-		System.out.println("con : " + con);
+		//디비 연결 정보 - context.xml
+		
+		//프로젝트 정보를 초기화
+		Context initCTX = new InitialContext();
+			
+		//초기화된 프로젝트 정보 중 데이터 불러오기
+		DataSource ds = (DataSource)initCTX.lookup("java:comp/env/jdbc/model12");
+		
+		//연결된 정보를 바탕으로 connection정보를 리턴
+		con = ds.getConnection();
 				
 		return con;		
 	
@@ -128,6 +152,61 @@ public class BoardDAO {
 	}// 글쓰기 - boardWrite()
 	
 	
+	// 글 목록 조회(all) - getBoardList()
+	// BoardDTO를 여러개 저장해 올 수 있는 배열을 반환타입으로 한다
+	public List<BoardDTO> getBoardList(){
+		
+		//글정보 모두를 저장하는 배열(가변길이)
+		List<BoardDTO> boardList = new ArrayList<>();
+		
+		try {
+			// 1. 드라이버로드
+			// 2. 디비연결
+			con = getConnect();
+			
+			// 3. sql 작성 & pstmt 객체
+			sql = "select * from itwill_board";
+			pstmt = con.prepareStatement(sql);
+			
+			// 4. sql 실행
+			rs = pstmt.executeQuery();
+			
+			// 5. 데이터 처리
+			while(rs.next()){
+				//데이터 있을 때 DB에 저장된 정보를 DTO저장 -> List 저장
+				
+				//DB정보를 -> DTO에 저장
+				BoardDTO dto = new BoardDTO();
+				dto.setBno(rs.getInt("bno"));
+				dto.setContent(rs.getString("content"));
+				dto.setDate(rs.getDate("date"));
+				dto.setFile(rs.getString("file"));
+				dto.setIp(rs.getString("ip"));
+				dto.setName(rs.getString("name"));
+				dto.setPass(rs.getString("pass"));
+				dto.setRe_lev(rs.getInt("re_lev"));
+				dto.setRe_ref(rs.getInt("re_ref"));
+				dto.setRe_seq(rs.getInt("re_seq"));
+				dto.setReadcount(rs.getInt("readcount"));
+				dto.setSubject(rs.getString("subject"));
+				
+				//DTO -> List
+				boardList.add(dto);
+				
+			}//while
+			
+			System.out.println(" DAO : 게시판 목록 모두 저장 완료 ");
+//			System.out.println(" DAO : " + boardList);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			closeDB();
+		}
+
+		return boardList;
+	}// 글 목록 조회(all) - getBoardList()
 	
 	
 	
