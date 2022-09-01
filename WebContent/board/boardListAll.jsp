@@ -18,9 +18,26 @@
 	
 	List<BoardDTO> boardList = (List<BoardDTO>)request.getAttribute("boardList");
 	
+//	request.setAttribute("pageNum", pageNum);
+//	request.setAttribute("cnt", cnt);
+//	request.setAttribute("pageCount", pageCount);
+//	request.setAttribute("pageBlock", pageBlock);
+//	request.setAttribute("startPage", startPage);
+//	request.setAttribute("endPage", endPage);
+	
+	String pageNum = (String) request.getAttribute("pageNum");
+	int cnt = (int) request.getAttribute("cnt");
+	int pageCount = (int) request.getAttribute("pageCount");
+	int pageBlock = (int) request.getAttribute("pageBlock");
+	int startPage = (int) request.getAttribute("startPage");
+	int endPage = (int) request.getAttribute("endPage");
+	
+	
 	
 
 %>
+
+<h3><a href="./BoardWrite.bo">글쓰기</a></h3>
 
 <table border="1">
 	<tr>
@@ -46,6 +63,51 @@
 	<%} %>
 	
 </table>
+
+
+<%
+
+//하단 페이징 처리
+if(cnt != 0){
+	//이전
+	if(startPage > pageBlock){
+		//pageBlock 3으로 설정함 -> 페이지가 4페이지로 가면 이전 생성
+		%>
+			<a href="./BoardList.bo?pageNum=<%=startPage-pageBlock%>">[이전]</a>
+		<%
+		//5페이지를 보고있으면 startPage는 4  pageBlock3 -> 1페이지로 간다
+		// 12페이지를 보고있으면 시작10 블럭3 -> 7페이지
+		// 이전을 누르면 직전 페이지의 startPage로 간다
+		// 이전 => 직전페이지의 첫페이지로 간다
+	}
+	
+	//1,2,3,4,
+	for(int i=startPage; i<= endPage; i++){
+		%>
+			<a href="./BoardList.bo?pageNum=<%=i%>">[<%=i %>]</a>
+		<%
+	}
+	
+	
+	//다음
+	
+	//1페이지를 보고있으면 endPage는 3
+	// 다음을 누르면 다음 페이지의 처음으로 간다
+	// 3페이지 에서 다음을 누르면 다음 블럭의 첫 페이지인 4페이지로 간다
+	if(endPage < pageCount){
+		%>
+			<a href="./BoardList.bo?pageNum=<%=startPage+pageBlock%>">[다음]</a>		
+		<%
+	}
+	
+	
+	
+}
+
+
+%>
+
+
 
 
 

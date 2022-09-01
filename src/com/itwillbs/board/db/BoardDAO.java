@@ -53,10 +53,11 @@ public class BoardDAO {
 		//디비 연결 정보 - context.xml
 		
 		//프로젝트 정보를 초기화
+		// 이 프로젝트를 초기화한다는
 		Context initCTX = new InitialContext();
 			
 		//초기화된 프로젝트 정보 중 데이터 불러오기
-		DataSource ds = (DataSource)initCTX.lookup("java:comp/env/jdbc/model12");
+		DataSource ds = (DataSource)initCTX.lookup("java:comp/env/jdbc/model2");
 		
 		//연결된 정보를 바탕으로 connection정보를 리턴
 		con = ds.getConnection();
@@ -83,6 +84,8 @@ public class BoardDAO {
 	
 	// 글쓰기 - boardWrite()
 	public void boardWrite(BoardDTO dto){
+		System.out.println("\n DAO : boardWrite(dto) 호출");
+		
 		int bno = 0; // 글번호 저장
 		try {
 			//1. 드라이버 로드
@@ -152,9 +155,11 @@ public class BoardDAO {
 	}// 글쓰기 - boardWrite()
 	
 	
-	// 글 목록 조회(all) - getBoardList()
+	// 글 목록 조회(all) - getBoardList() - 전체를 다 들고오는
 	// BoardDTO를 여러개 저장해 올 수 있는 배열을 반환타입으로 한다
 	public List<BoardDTO> getBoardList(){
+		
+		System.out.println("\n DAO : getBoardList() 호출");
 		
 		//글정보 모두를 저장하는 배열(가변길이)
 		List<BoardDTO> boardList = new ArrayList<>();
@@ -210,8 +215,114 @@ public class BoardDAO {
 	
 	
 	
+	// 글 목록 조회(all) - getBoardList(int startRow, int pageSize) - 오버로딩
+	// 원하는 만큼만 들고오는
+	public List<BoardDTO> getBoardList(int startRow, int pageSize){
+		
+		System.out.println("\n DAO : getBoardList(int startRow, int pageSize) 호출");
+		
+		//글정보 모두를 저장하는 배열(가변길이)
+		List<BoardDTO> boardList = new ArrayList<>();
+		
+		try {
+			// 1. 드라이버로드
+			// 2. 디비연결
+			con = getConnect();
+			
+			// 3. sql 작성 & pstmt 객체
+//			sql = "select * from itwill_board";
+			
+			// limit 시작행-1, 개수 : 시작 지점부터 해당 개수만큼 잘라오기 
+			// 정렬 re_ref 내림차순, re_seq 오름차순 -> 최신글이 가장 먼저오게
+			sql = "select * from itwill_board order by re_ref desc, re_seq asc limit ?, ?";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			//???
+			pstmt.setInt(1, startRow); // 시작행-1
+			pstmt.setInt(2, pageSize); // 몇개씩 보여줄 것인지
+			
+			
+			// 4. sql 실행
+			rs = pstmt.executeQuery();
+			
+			// 5. 데이터 처리
+			while(rs.next()){
+				//데이터 있을 때 DB에 저장된 정보를 DTO저장 -> List 저장
+				
+				//DB정보를 -> DTO에 저장
+				BoardDTO dto = new BoardDTO();
+				dto.setBno(rs.getInt("bno"));
+				dto.setContent(rs.getString("content"));
+				dto.setDate(rs.getDate("date"));
+				dto.setFile(rs.getString("file"));
+				dto.setIp(rs.getString("ip"));
+				dto.setName(rs.getString("name"));
+				dto.setPass(rs.getString("pass"));
+				dto.setRe_lev(rs.getInt("re_lev"));
+				dto.setRe_ref(rs.getInt("re_ref"));
+				dto.setRe_seq(rs.getInt("re_seq"));
+				dto.setReadcount(rs.getInt("readcount"));
+				dto.setSubject(rs.getString("subject"));
+				
+				//DTO -> List
+				boardList.add(dto);
+				
+			}//while
+			
+			System.out.println(" DAO : 게시판 목록 모두 저장 완료 ");
+//			System.out.println(" DAO : " + boardList);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			closeDB();
+		}
+
+		return boardList;
+	}// 글 목록 조회(all) - getBoardList(int startRow, int pageSize)
 	
 	
+	
+	// 글 전체 개수 조회(all) - getBoardCount()
+	public int getBoardCount(){
+		System.out.println("\n DAO : getBoardCount() 호출");
+		int cnt = 0;
+		
+		try {
+			// 1.2. 디비 연결 ( 커넥션 풀)
+			con = getConnect();
+			
+			// 3. sql작성 & pstmt 객체
+			sql = "select count(*) from itwill_board";
+			pstmt = con.prepareStatement(sql);
+			
+			// 4. sql 실행 - select
+			rs = pstmt.executeQuery();
+			
+			// 5. 데이터 처리
+			if(rs.next()){
+				//데이터 있을 때
+				//cnt = rs.getInt("count(*)"); // 컬럼명이 count(*)
+				cnt = rs.getInt(1); // 인덱스 명을 사용한다
+				
+			}
+			
+			System.out.println("DAO : 글 개수 - 총 : " + cnt + "개");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{ 
+			// 무조건 적어야한다 - 그래서 그냥 처음에 바로 적는다
+			closeDB();
+			//자동으로 자원해제를 해주는 구문 try-with구문
+		}
+		
+		
+		return cnt; // 리턴 꼭 해야한다 까먹지말고
+		
+	}// 글 전체 개수 조회(all) - getBoardCount()
 	
 	
 	
