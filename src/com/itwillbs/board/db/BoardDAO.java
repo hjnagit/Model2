@@ -326,11 +326,94 @@ public class BoardDAO {
 	
 	
 	
+	// 조회수 1증가시키기 updateReadcount()
+	public void updateReadcount(int bno){
+		System.out.println("C : updateReadcount() 호출");
+		
+		try {
+			//12디비연결
+			con = getConnect();
+			
+			//3 sql 작성 & pstmt 객체
+			sql = "update itwill_board set readcount=readcount+1 where bno = ?";
+			pstmt = con.prepareStatement(sql);
+			
+			//???
+			pstmt.setInt(1, bno);
+			
+			//4 sql  실행
+			pstmt.executeUpdate();
+			
+			System.out.println("DAO : 게시판글 조회수 1증가 완료");
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			closeDB();
+		}
+		
+		
+	}// 조회수 1증가시키기 updateReadcount()
 	
 	
 	
-	
-	
+	// 특정글 1개의 정보 조회 -  getBoard(bno)
+	public BoardDTO getBoard(int bno){
+		System.out.println("DAO : getBoard(bno) 호출");
+		
+		BoardDTO dto = null;
+		
+		try {
+			//12 디비연결
+			con = getConnect();
+			
+			//3 sql작성select & pstmt 객체
+			sql = "select * from itwill_board where bno = ?";
+			pstmt = con.prepareStatement(sql);
+			
+			//??
+			pstmt.setInt(1, bno);
+			
+			//4 sql 실행
+			rs = pstmt.executeQuery();
+			
+			//5 데이터처리
+			if(rs.next()){
+				// DB에 특정 번호의 글번호를 저장
+				
+				//DB -> DTB
+				//테이블의 정보를 전부 다 들고오는 과정은 필수적이다
+				//지금 당장 사용하지 않더라도 들고오자
+				dto = new BoardDTO();
+				dto.setBno(rs.getInt("bno"));
+				dto.setContent(rs.getString("content"));
+				dto.setDate(rs.getDate("date"));
+				dto.setFile(rs.getString("file"));
+				dto.setIp(rs.getString("ip"));
+				dto.setName(rs.getString("name"));
+				dto.setPass(rs.getString("pass"));
+				dto.setRe_lev(rs.getInt("re_lev"));
+				dto.setRe_ref(rs.getInt("re_ref"));
+				dto.setRe_seq(rs.getInt("re_seq"));
+				dto.setReadcount(rs.getInt("readcount"));
+				dto.setSubject(rs.getString("subject"));
+				
+				
+			}// if
+			
+			System.out.println("DAO : 게시글" + bno + "번 게시글 정보 저장 완료");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			closeDB();
+		}
+		
+		
+		return dto;
+		
+	}// 특정글 1개의 정보 조회 -  getBoard(bno)
 	
 	
 	

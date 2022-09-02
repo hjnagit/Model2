@@ -21,6 +21,7 @@
 	<tr>
 		<td>번호</td>
 		<td>제목</td>
+		<td>내용</td>
 		<td>글쓴이</td>
 		<td>조회수</td>
 		<td>작성일</td>
@@ -30,7 +31,10 @@
 	<c:forEach var="dto" items="${requestScope.boardList }">
 		<tr>
 			<td>${dto.bno }</td>
-			<td>${dto.subject }</td>
+			<td>
+			<a href="./BoardContent.bo?bno=${dto.bno }&pageNum=${requestScope.pageNum}">${dto.subject }</a>
+			</td>
+			<td>${dto.content }</td>
 			<td>${dto.name }</td>
 			<td>${dto.readcount }</td>
 			<td>${dto.date }</td>
