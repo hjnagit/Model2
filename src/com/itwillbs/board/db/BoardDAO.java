@@ -420,7 +420,7 @@ public class BoardDAO {
 	//글 정보 수정하기 updateBoard(dto)
 	public int updateBoard(BoardDTO dto){
 		int result = -1;
-		//0 1 -1
+		//0 1 -1 
 		
 		try {
 			//1.2. 디비연결
