@@ -38,7 +38,7 @@
 		<td colspan="3">${dto.file }</td>
 	</tr>
 	<tr>
-		<td><input type="button" value="수정"></td>
+		<td><input type="button" value="수정" onclick="location.href='./BoardUpdate.bo?bno=${dto.bno}&pageNum=${pageNum }';"></td>
 		<td><input type="button" value="삭제"></td>
 		<td><input type="button" value="답글"></td>
 		<td><input type="button" value="목록" onclick="location.href='./BoardList.bo?pageNum=${pageNum}';"></td>

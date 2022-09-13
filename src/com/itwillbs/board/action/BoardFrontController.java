@@ -107,6 +107,36 @@ public class BoardFrontController extends HttpServlet{
 		
 		}
 		
+		else if(command.equals("/BoardUpdate.bo")){
+			System.out.println("C : /BoardUpdate.bo 호출");
+			System.out.println("C : DB 사용, 해당 정보 출력"); 
+			
+			//BoardUpdateAction 객체 생성
+			action = new BoardUpdateAction();
+			
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		}
+		
+		else if(command.equals("/BoardUpdatePro.bo")){
+			System.out.println("C : /BoardUpdatePro.bo 호출");
+			System.out.println("C : DB에 가서 수정, 페이지 이동"); 
+			
+			//BoardUpdateProAction 객체 생성
+			action = new BoardUpdateProAction();
+			
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		}
+		
 		
 		//2. 가상주소 매핑-------------------------------------------------------------------------
 		System.out.println("2. 가상주소 매핑 - 끝");

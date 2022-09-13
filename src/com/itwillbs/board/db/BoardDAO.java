@@ -417,7 +417,71 @@ public class BoardDAO {
 	
 	
 	
-	
+	//글 정보 수정하기 updateBoard(dto)
+	public int updateBoard(BoardDTO dto){
+		int result = -1;
+		//0 1 -1
+		
+		try {
+			//1.2. 디비연결
+			con = getConnect();
+			
+			
+			//3. sql & pstmt
+			//글의 비밀번호 가져오기
+			sql = "select pass from itwill_board where bno=?";
+			pstmt = con.prepareStatement(sql);
+			
+			//?
+			pstmt.setInt(1, dto.getBno());
+			
+			
+			//4. sql 실행
+			rs = pstmt.executeQuery();
+			
+			
+			//5.데이터 처리
+			if(rs.next()){
+				//게시판 글 있음
+				if(dto.getPass().equals(rs.getString("pass"))){
+					//비밀번호가 일치함
+					//업데이트하기
+					//3. sql -  update$pstmt객체
+					sql = "update itwill_board set name=?, subject=?, content=? where bno=?";
+					pstmt = con.prepareStatement(sql);
+					
+					//????
+					pstmt.setString(1, dto.getName());
+					pstmt.setString(2, dto.getSubject());
+					pstmt.setString(3, dto.getContent());
+					pstmt.setInt(4, dto.getBno());
+					
+					//4. sql실행
+					result = pstmt.executeUpdate();
+					
+					
+				}else{
+					//비밀번호가 다름
+					result = 0;
+				}
+			}else{
+				//게시판 글 없음
+				result = -1;
+			}
+			
+			System.out.println("DAO : 글 수정 완료(" + result + ")");
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeDB();
+		}
+		
+		
+		
+		return result;
+	}//글 정보 수정하기 updateBoard(dto)
 	
 	
 	
