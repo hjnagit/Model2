@@ -39,8 +39,8 @@
 	</tr>
 	<tr>
 		<td><input type="button" value="수정" onclick="location.href='./BoardUpdate.bo?bno=${dto.bno}&pageNum=${pageNum }';"></td>
-		<td><input type="button" value="삭제"></td>
-		<td><input type="button" value="답글"></td>
+		<td><input type="button" value="삭제" onclick="location.href='./BoardDelete.bo?bno=${dto.bno}&pageNum=${pageNum }';"></td>
+		<td><input type="button" value="답글" onclick="location.href='./BoardReWrite.bo?bno=${dto.bno}&pageNum=${pageNum }&re_ref=${dto.re_ref }&re_lev=${dto.re_lev }&re_seq=${dto.re_seq }';"></td>
 		<td><input type="button" value="목록" onclick="location.href='./BoardList.bo?pageNum=${pageNum}';"></td>
 	</tr>
 </table>

@@ -8,11 +8,23 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+
+h2{
+	color: red;
+}
+
+
+
+</style>
 </head>
 <body>
 <h1>boardList.jsp</h1>
 
 <h2>게시판 목록</h2>
+
+<h1 style="color: white; background-color: red; display: inline;">데브가현 헤이터</h1>
+<h2>돈미새 가현님을 헤이트하는 모임</h2>
 
 
 <h3><a href="./BoardWrite.bo">글쓰기</a></h3>
@@ -21,7 +33,7 @@
 	<tr>
 		<td>번호</td>
 		<td>제목</td>
-		<td>내용</td>
+	
 		<td>글쓴이</td>
 		<td>조회수</td>
 		<td>작성일</td>
@@ -32,9 +44,13 @@
 		<tr>
 			<td>${dto.bno }</td>
 			<td>
+			<c:if test="${dto.re_lev > 0 }">
+				<img src="./board/level.gif" width="${dto.re_lev *20 }" height="10">
+				<img src="./board/re.gif">
+			</c:if>
 			<a href="./BoardContent.bo?bno=${dto.bno }&pageNum=${requestScope.pageNum}">${dto.subject }</a>
 			</td>
-			<td>${dto.content }</td>
+			
 			<td>${dto.name }</td>
 			<td>${dto.readcount }</td>
 			<td>${dto.date }</td>

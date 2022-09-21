@@ -13,6 +13,7 @@
 
 <h2>게시판 목록</h2>
 
+
 <%
 	//request.setAttribute("boardList", boardList); 의 정보를 출력
 	

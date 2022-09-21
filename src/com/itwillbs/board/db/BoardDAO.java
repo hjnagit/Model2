@@ -485,5 +485,150 @@ public class BoardDAO {
 	
 	
 	
+	//글 정보 삭제 deleteBoard(dto)
+	//데이터를 하나만 받아와도 dto에 담아서 처리한다
+	public int deleteBoard(BoardDTO dto){
+		int result = -1;
+		//0 1 -1 
+		
+		try {
+			//1.2. 디비연결
+			con = getConnect();
+			
+			
+			//3. sql & pstmt
+			//글의 비밀번호 가져오기
+			sql = "select pass from itwill_board where bno=?";
+			pstmt = con.prepareStatement(sql);
+			
+			//?
+			pstmt.setInt(1, dto.getBno());
+			
+			
+			//4. sql 실행
+			rs = pstmt.executeQuery();
+			
+			
+			//5.데이터 처리
+			if(rs.next()){
+				//게시판 글 있음
+				if(dto.getPass().equals(rs.getString("pass"))){
+					//비밀번호가 일치함
+					//업데이트하기
+					//3. sql -  delete$pstmt객체
+					sql = "delete from itwill_board where bno=?";
+					pstmt = con.prepareStatement(sql);
+					
+					//????
+					pstmt.setInt(1, dto.getBno());
+					
+					//4. sql실행
+					result = pstmt.executeUpdate();
+					
+					
+				}else{
+					//비밀번호가 다름
+					result = 0;
+				}
+			}else{
+				//게시판 글 없음
+				result = -1;
+			}
+			
+			System.out.println("DAO : 글 삭제 완료(" + result + ")");
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeDB();
+		}
+		
+		
+		
+		return result;
+	}//글 정보 삭제 deleteBoard
+	
+	
+	
+	// 답글쓰기 - reInsert()
+	public void reInsert(BoardDTO dto){
+		System.out.println("\n DAO : reInsert(dto) 호출");
+		
+		int bno = 0; // 글번호 저장
+		
+		try {
+			con = getConnect();
+			
+			// 1) bno 계산하기
+			sql = "select max(bno) from itwill_board";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()){
+				//bno = rs.getInt("max(bno)")+1;
+				bno = rs.getInt(1)+1; // 인덱스가 더 빠르게 처리된다
+			}
+			System.out.println(" DAO : 글번호 bno : " + bno);
+			
+			
+			
+			
+			// 2) 답글 순서 재배치(update)
+			// 같은 그룹에 있으면서(re_ref), 기본의 순서(re_seq)보다 큰값이 있을때만 수정
+			sql = "update itwill_board set re_seq = re_seq+1 "
+					+ "where re_ref=? and re_seq>?";
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, dto.getRe_ref());
+			pstmt.setInt(2, dto.getRe_seq());
+			
+			int result = pstmt.executeUpdate(); 
+			
+			//이것은 항상 실행되는 것은 아니다 답글을 하나만 달때는 필요없음
+			if(result > 0){
+				System.out.println("DAO : 답글 순서 재배치 완료");
+			}
+			
+			
+			
+			
+			// 3) 답글쓰기 (insert) : re_ref, re_seq 계산하기
+			
+			sql = "insert into itwill_board(bno, name, pass, subject, content,"
+					+ "readcount, re_ref, re_lev, re_seq,date,ip,file) "
+					+ "values(?,?,?,?,?,?,?,?,?,now(),?,?)";
+			pstmt = con.prepareStatement(sql);
+			
+			//???
+			pstmt.setInt(1, bno); // 1)에서 계산한 bno
+			pstmt.setString(2, dto.getName());
+			pstmt.setString(3, dto.getPass());
+			pstmt.setString(4, dto.getSubject());
+			pstmt.setString(5, dto.getContent());
+			
+			pstmt.setInt(6, 0);//조회수는 항상 0
+			pstmt.setInt(7, dto.getRe_ref()); //re_ref : 원글의 re_ref
+			pstmt.setInt(8, dto.getRe_lev()+1); //re_lev : 원글 lev+1
+			pstmt.setInt(9, dto.getRe_seq()+1); //re_seq : 원글 seq+1
+			
+			pstmt.setString(10, dto.getIp()); 
+			pstmt.setString(11, dto.getFile());
+			
+			
+			pstmt.executeUpdate();
+			
+			System.out.println("DAO : 답글 작성 완료");
+			
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} finally{
+			closeDB();
+		}
+		
+	
+	}// 답글쓰기 - reInsert()
+	
 	
 } // class

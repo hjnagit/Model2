@@ -107,7 +107,7 @@ public class BoardFrontController extends HttpServlet{
 		
 		}
 		
-		else if(command.equals("/BoardUpdate.bo")){
+		else if(command.equals("/BoardUpdate.bo")){//수정페이지
 			System.out.println("C : /BoardUpdate.bo 호출");
 			System.out.println("C : DB 사용, 해당 정보 출력"); 
 			
@@ -122,7 +122,7 @@ public class BoardFrontController extends HttpServlet{
 		
 		}
 		
-		else if(command.equals("/BoardUpdatePro.bo")){
+		else if(command.equals("/BoardUpdatePro.bo")){//수정하기
 			System.out.println("C : /BoardUpdatePro.bo 호출");
 			System.out.println("C : DB에 가서 수정, 페이지 이동"); 
 			
@@ -137,6 +137,55 @@ public class BoardFrontController extends HttpServlet{
 		
 		}
 		
+		else if(command.equals("/BoardDelete.bo")){ //삭제페이지
+			System.out.println("C : /BoardDelete.bo 호출");
+			System.out.println("C : DB x, view 페이지 이동"); 
+			
+			forward = new ActionForward(); // 객체 생성하기, 정보저장하기
+			forward.setPath("./board/boardDelete.jsp"); //주소 저장
+			forward.setRedirect(false); // 이동방식을 false forward 방식
+		
+		}
+		
+		else if(command.equals("/BoardDeleteAction.bo")){ //삭제액션
+			System.out.println("C : /BoardDeleteAction.bo 호출");
+			System.out.println("C : DB에 가서 수정, 페이지 이동"); 
+			
+			//BoardDeleteAction 객체 생성
+			action = new BoardDeleteAction();
+			
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		else if(command.equals("/BoardReWrite.bo")){ //삭제액션
+			System.out.println("C : /BoardReWrite.bo 호출");
+			System.out.println("C : DB x, 페이지 이동"); 
+			
+			forward = new ActionForward(); // 객체 생성하기, 정보저장하기
+			forward.setPath("./board/reWriteForm.jsp"); //주소 저장
+			forward.setRedirect(false); // 이동방식을 false forward 방식
+		
+		}
+		
+		else if(command.equals("/BoardReWriteAction.bo")){ //삭제액션
+			System.out.println("C : /BoardReWriteAction.bo 호출");
+			System.out.println("C : DB에 가서 수정, 페이지 이동"); 
+			
+			//BoardReWriteAction 객체 생성
+			action = new BoardReWriteAction();
+			
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
 		
 		//2. 가상주소 매핑-------------------------------------------------------------------------
 		System.out.println("2. 가상주소 매핑 - 끝");
