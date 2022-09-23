@@ -28,6 +28,7 @@ h2{
 
 
 <h3><a href="./BoardWrite.bo">글쓰기</a></h3>
+<h3><a href="./FileBoardWrite.bo">파일첨부 글쓰기</a></h3>
 
 <table border="1">
 	<tr>

@@ -187,6 +187,31 @@ public class BoardFrontController extends HttpServlet{
 			
 		}
 		
+		else if(command.equals("/FileBoardWrite.bo")){ //파일첨부 글쓰기
+			System.out.println("C : /FileBoardWrite.bo 호출");
+			System.out.println("C : DB x, 페이지 이동"); 
+			
+			forward = new ActionForward(); // 객체 생성하기, 정보저장하기
+			forward.setPath("./board/fWriteForm.jsp"); //주소 저장
+			forward.setRedirect(false); // 이동방식을 false forward 방식
+			
+		}
+		
+		else if(command.equals("/FileBoardWriteAction.bo")){ //사진첨부 액션
+			System.out.println("C : /FileBoardWriteAction.bo 호출");
+			System.out.println("C : DB에 사용, 페이지 이동"); 
+			
+			//FileBoardReWriteAction 객체 생성
+			action = new FileBoardWriteAction();
+			
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
 		//2. 가상주소 매핑-------------------------------------------------------------------------
 		System.out.println("2. 가상주소 매핑 - 끝");
 		

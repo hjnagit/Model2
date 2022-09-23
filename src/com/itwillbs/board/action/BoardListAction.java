@@ -30,7 +30,7 @@ public class BoardListAction implements Action {
 		//./BoardList.bo?pageNum=5&pageSize=3
 		String urlPageSize = request.getParameter("pageSize");
 		if(urlPageSize == null){
-			urlPageSize = "5";
+			urlPageSize = "10";
 		}
 		
 		int pageSize = Integer.parseInt(urlPageSize);

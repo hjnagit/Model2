@@ -35,7 +35,9 @@
 	</tr>
 	<tr>
 		<td>첨부파일</td>
-		<td colspan="3">${dto.file }</td>
+		<td colspan="3">
+			<a href="./upload/${dto.file }">${dto.file }</a></td>
+<%-- 			<a href="./upload/${dto.file }" download>${dto.file }</a></td> --%>
 	</tr>
 	<tr>
 		<td><input type="button" value="수정" onclick="location.href='./BoardUpdate.bo?bno=${dto.bno}&pageNum=${pageNum }';"></td>
