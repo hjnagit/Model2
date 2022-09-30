@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인페이지</title> 
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/daddbc6c0e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="boarderList.css">
+</head>
+
+<body>
+    <div class="header">
+        <ul class="util">
+          <li><a href="login.html">Login</a></li>
+          <li><a href="signup.html">Join</a></li>
+          <li><a href="MyPage.html">MyPage</a></li>
+        </ul>
+      <h1>CINEMAWILL</h1>
+    </div>
+      
+      <div id="navbar">
+        <a href="boardList.html">문의게시판</a>
+        <a href="#">회사소개</a>
+        <a href="index.html">HOME</a> 
+        <a href="">영화</a> 
+        <a href="#">예매</a> 
+      </div>
+
+<section class="notice">
+  <div class="page-title">
+        <div class="container">
+            <h3>Q&A</h3>
+        </div>
+    </div>
+   <div class="button12">
+    <input type="button" class="btn" value="글쓰기" onclick="location.href='boardWrite.html'">
+   </div>
+    
+
+  <!-- board list area -->
+    <div id="board-list">
+        <div class="container">
+            <table class="board-table">
+                <thead>
+                <tr>
+                    <th scope="col" class="th-num">번호</th>
+                    <th scope="col" class="th-title">제목</th>
+                    <th scope="col" class="th-date">작성자</th>
+                    <th scope="col" class="th-date">등록일</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr>
+                    <td>2</td>
+                    <th><a href="#">질문 ㄱ ㄱ ㄱ ㄱ ㄱ ㄱ </a></th>
+                    <th><a href="#">해진쉬</a></th>
+                    <td>2017.06.15</td>
+                </tr>
+                
+                <tr>
+                    <td>1</td>
+                    <th><a href="#">질문 ㄱ ㄱ ㄱ ㄱ ㄱ ㄱ </a></th>
+                    <th><a href="#">해진쉬</a></th>
+                    <td>2017.06.15</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+<footer>
+    <div class="inner">
+        <div class="upper">
+            <h1>시네마윌</h1>
+            <ul>
+                <li><a href="#">인스타그램</a></li>
+                <li><a href="#">블로그</a></li>
+            </ul>
+        </div>
+
+        <div class="lower">
+            <address>
+                부산광역시 ㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂ주소를 입력<br>
+                TEL : 051-000-0000 C.P : 010-1234-5678
+            </address>
+    
+        </div>
+    </div>
+</footer>
+
+<script>
+    window.onscroll = function() {myFunction()};
+    
+    var navbar = document.getElementById("navbar");
+    var sticky = navbar.offsetTop;
+    
+    function myFunction() {
+      if (window.pageYOffset >= sticky) {
+        navbar.classList.add("sticky")
+      } else {
+        navbar.classList.remove("sticky");
+      }
+    }
+    </script> 
+</body>
+
+</html>
